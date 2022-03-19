@@ -1,7 +1,7 @@
 name: buildProject
 
 on:
-  proejct:
+  project:
     created:
   workflow_dispatch: {}
 
