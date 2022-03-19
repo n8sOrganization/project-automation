@@ -1,1 +1,17 @@
-temp
+name: buildProject
+
+on:
+  proejct:
+    created:
+  workflow_dispatch: {}
+
+jobs:
+  configuration:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Create or Update Project Card
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          project-name: My project
+          column-name: My column
+          issue-number: 1
