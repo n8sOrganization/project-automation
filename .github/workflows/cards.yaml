@@ -9,9 +9,16 @@ jobs:
   configuration:
     runs-on: ubuntu-18.04
     steps:
+      - name: Create issue
+        uses: actions/checkout@v2
+        uses: JasonEtco/create-an-issue@v2
+        with:
+          filename: .github/issue-1-template.md
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: POC
           column-name: ToDo
           issue-number: 1
+
+  
