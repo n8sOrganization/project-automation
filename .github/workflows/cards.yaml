@@ -13,5 +13,5 @@ jobs:
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: My project
-          column-name: My column
+          column-name: My second column
           issue-number: 1
