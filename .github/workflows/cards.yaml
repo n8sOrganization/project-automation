@@ -1,7 +1,7 @@
 name: buildProject
 
 on:
-  create:
+  create
 jobs:
   configuration:
     runs-on: ubuntu-18.04
