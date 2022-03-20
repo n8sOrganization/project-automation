@@ -2,7 +2,8 @@ name: buildProject
 
 on:
   create:
-  
+    repository: $GITHUB_REPOSITORY
+
 jobs:
   configuration:
     runs-on: ubuntu-18.04
