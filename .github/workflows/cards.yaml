@@ -27,11 +27,11 @@ jobs:
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: 1
+          issue-number: 2
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: 2
+          issue-number: 1
 
