@@ -1,7 +1,7 @@
 name: buildProject
 
 on:
-  push:
+  <fix this>:
 jobs:
   configuration:
     runs-on: ubuntu-18.04
