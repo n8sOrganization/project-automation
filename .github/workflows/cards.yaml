@@ -4,7 +4,7 @@ on:
   workflow_dispatch: {}
 jobs:
   configuration:
-    if: github.ref == 'refs/heads/main'
+    if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
