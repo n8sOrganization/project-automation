@@ -1,7 +1,6 @@
 name: buildProject
 
-on:
-  create
+on: [create]
   
 jobs:
   configuration:
