@@ -9,7 +9,8 @@ jobs:
   configuration:
     runs-on: ubuntu-18.04
     steps:
-    uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Create issue 1
         uses: JasonEtco/create-an-issue@v2
         env:
