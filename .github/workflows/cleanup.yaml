@@ -46,15 +46,16 @@ jobs:
             }
 
 # Remove project automation files from repo
-  removeFiles:
-    needs: removeRun
-    runs-on: ubuntu-18.04
-    steps:
+#  removeFiles:
+#    needs: removeRun
+#    runs-on: ubuntu-18.04
+#    steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Remove project automation
         run: |
           rm ./.github/workflows/cards.yaml
+          rm ./.github/workflows/cleanup.yaml
           rm -rf ./.github/seed-issues
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
