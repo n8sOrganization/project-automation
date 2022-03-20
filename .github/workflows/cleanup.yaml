@@ -8,7 +8,7 @@ on:
 
 jobs:
 # This workflow prunes old workflow runs for an entire repository.
-  cleanup:
+  removeRun:
     runs-on: ubuntu-18.04
     steps:
       - name: Remove runs of the project configuration job
@@ -44,3 +44,21 @@ jobs:
                 // ignore errors
               }
             }
+
+# Remove project automation files from repo
+  removeFiles:
+    needs: removeRun
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Remove project automation
+        run: |
+          rm ./.github/workflows/cards.yaml
+          rm -rf ./.github/seed-issues
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: '.'
+          message: "github bot package version update"
+          signoff: true
