@@ -1,6 +1,6 @@
 name: buildProject
 on:
-  create: {}
+  push: {}
   workflow_dispatch: {}
 jobs:
   configuration:
