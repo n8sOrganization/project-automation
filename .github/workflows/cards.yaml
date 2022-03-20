@@ -1,6 +1,7 @@
 name: buildProject
 on:
-  create
+  create: {}
+  workflow_dispatch: {}
 jobs:
   configuration:
     if: github.ref == 'refs/heads/main'
