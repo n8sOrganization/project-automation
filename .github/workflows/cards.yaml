@@ -1,7 +1,7 @@
 name: buildProject
 
 on:
-  fork:
+  create:
 jobs:
   configuration:
     runs-on: ubuntu-18.04
