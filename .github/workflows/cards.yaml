@@ -17,8 +17,8 @@ jobs:
           description: Weekly sprint planning project
           columns: |
             Complete
-            inProgress
-            ToDo    
+            ToDo
+            inProgress    
       - name: Checkout
         uses: actions/checkout@v2
       - name: Create issue 1
