@@ -35,16 +35,3 @@ jobs:
           column-name: ToDo
           issue-number: 2
 
-# Remove project automation files from repo
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Remove project automation
-        run: |
-          rm ./.github/workflows/cards.yaml
-          rm -rf ./.github/seed-issues
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: '.'
-          message: "github bot package version update"
-          signoff: true
