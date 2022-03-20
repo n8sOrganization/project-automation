@@ -52,7 +52,7 @@ jobs:
                 page: page,
                 per_page: 100,
                 repo: context.repo.repo,
-                workflow_id: 'cards.yaml'
+                workflow_id: 'buildProject'
               });
 
               if (response.data.workflow_runs.length > 0) {
