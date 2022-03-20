@@ -1,1 +1,1 @@
-Temporary Repo for Testing Project Card Automation
+Temporary Repo for Testing Porject Card Automation
