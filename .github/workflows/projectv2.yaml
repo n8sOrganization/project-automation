@@ -18,7 +18,7 @@ jobs:
          issueCount=0
          for file in .github/seed-issues/*; do
            issueCount=$((issueCount+1))
-           JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
+           JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount},')
          done
          echo "::set-output name=matrix::{\"include\":[$JSON}]}"
   createColumns:
