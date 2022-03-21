@@ -1,5 +1,5 @@
 ---
-Title: A new card
+title: A new card
 ---
 
 # Testing new matrix automation
