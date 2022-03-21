@@ -7,6 +7,7 @@ on:
 jobs:
 # This workflow prunes old workflow runs for an entire repository.
   removeRun:
+  if: github.repository != 'n8sOrganization/project-automation' 
     runs-on: ubuntu-18.04
     steps:
       - name: Remove runs of the project configuration job
