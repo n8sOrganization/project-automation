@@ -60,9 +60,13 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
+      - name: Sanity Check
+        run: |
+          echo ${{ matrix.issueCount }}
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: POC
           column-name: ToDo
           issue-number: ${{ matrix.issueCount }}
+          
