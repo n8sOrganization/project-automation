@@ -1,5 +1,6 @@
 name: cleanup
 on:
+  workflow_dispatch: {}
   #workflow_run:
   #  workflows: [buildProject]
   #  types:
