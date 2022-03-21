@@ -11,4 +11,4 @@ The `seed-issues` folder contains md files representing the contents of each iss
 This should be implmented in your own GH organization with a github PAT set as a org secret and then copying from template to a repo in same org. Default name for GH secret is GH_TOKEN,
 
 _to-do:_
-* _Implementa matrix to iterate over issue template files._
+* _Implement a matrix to iterate over issue template files._
