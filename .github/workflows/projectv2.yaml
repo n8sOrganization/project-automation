@@ -50,11 +50,11 @@ jobs:
       - name: Create issue
         uses: JasonEtco/create-an-issue@v2
         with:
-          filename: matrix.issue
+          filename: ${{ matrix.issue }}
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: matrix.issueCount
+          issue-number: ${{ matrix.issueCount }}
  
