@@ -53,23 +53,14 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: ${{ matrix.issue }}
-      - name: Sanity Check for Issue Number
-        run: |
-          echo ${{ matrix.issueCount }}
-  assignIssues:
-    if: github.repository != 'n8sOrganization/project-automation'
-    needs: [createIssues]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
-    steps:
-      - name: Sanity Check
-        run: |
-          echo ${{ matrix.issueCount }}
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: ${{ matrix.issueCount }}
-          
+          issue-number: myIntegerNumber: ${{ matrix.issueCount }}
+      - name: Sanity Check for Issue Number
+        run: |
+          echo ${{ matrix.issueCount }}
+
+ 
