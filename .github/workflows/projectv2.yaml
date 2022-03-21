@@ -53,6 +53,9 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: ${{ matrix.issue }}
+      - name: Sanity Check for Issue Number
+        run: |
+          echo ${{ matrix.issueCount }}
   assignIssues:
     if: github.repository != 'n8sOrganization/project-automation'
     needs: [createIssues]
