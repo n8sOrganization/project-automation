@@ -16,7 +16,8 @@ jobs:
          issueCount=0
          for file in ./*; do
            issueCount=$((issueCount+1))
-           tmptry+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
+           JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
+           run: echo "::set-output name=matrix::"$JSON
          done
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
