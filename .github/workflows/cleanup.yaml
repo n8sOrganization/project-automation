@@ -47,7 +47,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Remove project automation
         run: |
-          rm ./.github/workflows/cards.yaml
+          rm ./.github/workflows/project.yaml
           rm ./.github/workflows/cleanup.yaml
           rm -rf ./.github/seed-issues
       - name: Commit changes
