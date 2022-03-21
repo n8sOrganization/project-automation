@@ -10,11 +10,13 @@ jobs:
     outputs:
       matrix: ${{ steps.issueArray.outputs.matrix }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: issueArray 
         id: issueArray 
         run: |
          issueCount=0
-         for file in ./*; do
+         for file in /.github/seed-issues/*; do
            issueCount=$((issueCount+1))
            JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
            echo "::set-output name=matrix::"$JSON
