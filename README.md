@@ -1,4 +1,4 @@
-## Temporary Repo for Testing Github Porject Board Creation Automation
+## Temporary Repo for Testing Github Project Board Creation Automation
 
 Due to challenges with Github action triggers with create repo from template, the base trigger is manual.
 
