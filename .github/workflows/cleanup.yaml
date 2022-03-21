@@ -1,9 +1,9 @@
 name: cleanup
 on:
-  workflow_run:
-    workflows: [buildProject]
-    types:
-      - completed
+  #workflow_run:
+  #  workflows: [buildProject]
+  #  types:
+  #    - completed
 jobs:
 # This workflow prunes old workflow runs for an entire repository.
   removeRun:
