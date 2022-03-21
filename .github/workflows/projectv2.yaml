@@ -56,5 +56,5 @@ jobs:
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: ${{ matrix.issueCount }}
+          issue-number: 1
  
