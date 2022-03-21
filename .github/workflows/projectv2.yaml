@@ -18,10 +18,10 @@ jobs:
          issueCount=0
          for file in .github/seed-issues/*; do
            issueCount=$((issueCount+1))
-           JSON+=$(echo {file: $file, issueCount: $issueCount},)
+           JSON+=$(echo {\"file\":\"$file\",\"issueCount\":\"$issueCount\"},)
          done
-         #echo "::set-output name=matrix::{\"include\":[$JSON]}"
-         echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"},]}"
+         echo "::set-output name=matrix::{\"include\":[$JSON]}" | sed 's/ //g'
+         #echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"},]}"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
