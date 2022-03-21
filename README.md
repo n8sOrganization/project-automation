@@ -1,4 +1,6 @@
-## Temporary Repo for Testing Github Project Board Creation Automation
+## Github Project Board Creation Automation Hack
+
+### With these workflow files in your template repo, you create a repo from template, then gh actions will create a project, add columns, create issues, attach issues to board, and cleanup the workflows so they won't run again.
 
 Add the contents of the `/.github` folder to your template repo. 
 
@@ -8,4 +10,3 @@ The `seed-issues` folder contains md files representing the cpntents of each iss
 
 This should be implmented in your own GH organization with a github PAT set as a org secret and then copying from template to a repo in same org. Default name for GH secret is GH_TOKEN,
 
-With these workflow files in your template repo, you create a copy repo, then gh actions will create a project, add columns, create issues, attach issues to board, and cleanup the workflows so they won't run again.
