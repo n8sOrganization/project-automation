@@ -6,7 +6,7 @@ env:
 jobs:
   makeIssuesArray:
     if: github.repository != 'n8sOrganization/project-automation'  
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.issueArray.outputs.matrix }}
     steps:
@@ -16,14 +16,14 @@ jobs:
         id: issueArray 
         run: |
          issueCount=0
-         for file in /.github/seed-issues/*; do
-           issueCount=$((issueCount+1))
-           JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
-         done
-         echo "::set-output name=matrix::"$JSON
+         #for file in .github/seed-issues/*; do
+         #  issueCount=$((issueCount+1))
+         #  JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
+         #done
+         echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,20 +39,20 @@ jobs:
   createIssues:
     if: github.repository != 'n8sOrganization/project-automation'
     needs: [makeIssuesArray, createColumns]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.makeIssuesArray.outputs.matrix)}}
+      matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Create issue
         uses: JasonEtco/create-an-issue@v2
         with:
-          filename: matrix.file
+          filename: matrix.project
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: matrix.count
+          issue-number: matrix.config
  
