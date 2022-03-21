@@ -1,6 +1,6 @@
 ## Temporary Repo for Testing Github Project Board Creation Automation
 
-The `/.github/workflows/project.yeml` needs to be updated on line 6 to match your repo org/name. If not, it will run against your template repo.
+The `/.github/workflows/project.yeml` needs to be updated on line 6 and `/.github/workflows/cleanup.yaml` on line 10 to match your repo org/name. Commit both of these changes in one commmit. If not, it will run against your template repo.
 
 The `seed-issues` folder contains md files representing the cpntents of each issue to be created. The `project` workflow creates the project, issues, and assigns issues to board. The `cleanup` workflow deletes the workflow files and project workflow history to prevent someone from inadvertantly running the automation again.
 
