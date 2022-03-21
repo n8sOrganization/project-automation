@@ -16,11 +16,12 @@ jobs:
         id: issueArray 
         run: |
          issueCount=0
-         #for file in .github/seed-issues/*; do
-         #  issueCount=$((issueCount+1))
-         #  JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
-         #done
-         echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+         for file in .github/seed-issues/*; do
+           issueCount=$((issueCount+1))
+           JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
+         done
+         echo "::set-output name=matrix::{\"include\":[$JSON}]}
+         #echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -48,11 +49,11 @@ jobs:
       - name: Create issue
         uses: JasonEtco/create-an-issue@v2
         with:
-          filename: matrix.project
+          filename: matrix.file
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: matrix.config
+          issue-number: matrix.issueCount
  
