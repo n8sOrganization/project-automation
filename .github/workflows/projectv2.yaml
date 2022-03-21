@@ -19,8 +19,8 @@ jobs:
          for file in /.github/seed-issues/*; do
            issueCount=$((issueCount+1))
            JSON+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
-           echo "::set-output name=matrix::"$JSON
          done
+         echo "::set-output name=matrix::"$JSON
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-18.04
