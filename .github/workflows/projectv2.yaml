@@ -20,7 +20,7 @@ jobs:
            issueCount=$((issueCount+1))
            JSON+=$(echo {file: $file, issueCount: $issueCount},)
          done
-         echo "::set-output name=matrix::{\"include\":[$JSON}]}"
+         echo "::set-output name=matrix::{\"include\":[$JSON]}"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
