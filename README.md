@@ -1,1 +1,1 @@
-Temporary Repo for Testing Porject Card Automation
+Temporary Repo for Testing Github Porject Board Creation Automation
