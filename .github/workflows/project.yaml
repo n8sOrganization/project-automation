@@ -12,8 +12,6 @@ jobs:
         uses: actions/checkout@v2
       - name: createProject
         uses: matthewferry/create-a-project@v1
-        #env:
-          #GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           name: "POC"
           description: POC Project Board
@@ -21,18 +19,12 @@ jobs:
             ToDo
             inProgress
             Complete
-      #- name: Checkout
-        #uses: actions/checkout@v2
       - name: Create issue 1
         uses: JasonEtco/create-an-issue@v2
-        #env:
-          #GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           filename: .github/seed-issues/issue-1-template.md
       - name: Create issue 2
         uses: JasonEtco/create-an-issue@v2
-        #env:
-          #GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           filename: .github/seed-issues/issue-2-template.md
   
