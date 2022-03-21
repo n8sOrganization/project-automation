@@ -16,15 +16,15 @@ jobs:
         uses: actions/checkout@v2
       - name: issueArray 
         id: issueArray 
-        run: |
+        run: |  
          issueCount=0
+         JSON="::set-output name=matrix::{\"include\":["
          for file in .github/seed-issues/*; do
            issueCount=$((issueCount+1))
-           JSON+=$(echo {\"file\":\"$file\",\"issueCount\":\"$issueCount\"},)
+           JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
          done
-         echo "::set-output name=matrix::{\"include\":[{\"issue\":\".github/seed-issues/issue-1-template.md\",\"issueCount\":1},{\"issue\":\".github/seed-issues/issue-2-template.md\",\"issueCount\":2},]}"
-         #echo "::set-output name=matrix::{\"include\":[$JSON]}" | sed 's/ //g'
-         #echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"},]}"
+         JSON+="]}"
+         echo $JSON
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -59,8 +59,6 @@ jobs:
           project-name: POC
           column-name: ToDo
           issue-number: ${{ matrix.issueCount }}
-      - name: Sanity Check for Issue Number
-        run: |
-          echo ${{ matrix.issueCount }}
+
 
  
