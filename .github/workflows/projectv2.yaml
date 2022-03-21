@@ -1,0 +1,55 @@
+name: buildProject
+on:
+  workflow_dispatch: {}
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+jobs:
+  makeIssuesArray:
+    if: github.repository != 'n8sOrganization/project-automation'  
+    runs-on: ubuntu-18.04
+    outputs:
+      matrix: ${{ steps.issueArray.outputs.matrix }}
+    steps:
+      - name: issueArray 
+        id: issueArray 
+        run: |
+         issueCount=0
+         for file in ./*; do
+           issueCount=$((issueCount+1))
+           tmptry+=$(jq --null-input --arg file "${file}" --arg issueCount "${issueCount}" '{"file": $file, "count": $issueCount}')
+         done
+  createColumns:
+    if: github.repository != 'n8sOrganization/project-automation'
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: createProject
+        uses: matthewferry/create-a-project@v1
+        with:
+          name: "POC"
+          description: POC Project Board
+          columns: |
+            ToDo
+            inProgress
+            Complete      
+  createIssues:
+    if: github.repository != 'n8sOrganization/project-automation'
+    needs: [makeIssuesArray, createColumns]
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix: ${{fromJson(needs.makeIssuesArray.outputs.matrix)}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create issue
+        uses: JasonEtco/create-an-issue@v2
+        with:
+          filename: matrix.file
+      - name: Create Project Card
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          project-name: POC
+          column-name: ToDo
+          issue-number: matrix.count
+ 
