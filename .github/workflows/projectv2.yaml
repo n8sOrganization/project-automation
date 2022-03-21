@@ -20,7 +20,7 @@ jobs:
            issueCount=$((issueCount+1))
            JSON+=$(echo {\"file\":\"$file\",\"issueCount\":\"$issueCount\"},)
          done
-         ::set-outputname=matrix::{"include":["file":".github/seed-issues/issue-1-template.md","issueCount":"1","file":".github/seed-issues/issue-2-template.md","issueCount":"2",]}
+         ::set-output name=matrix::{"include":[{"file":".github/seed-issues/issue-1-template.md","issueCount":"1"},{"file":".github/seed-issues/issue-2-template.md","issueCount":"2"},]}
          #echo "::set-output name=matrix::{\"include\":[$JSON]}" | sed 's/ //g'
          #echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"},]}"
   createColumns:
