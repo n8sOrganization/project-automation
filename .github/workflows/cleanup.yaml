@@ -24,7 +24,7 @@ jobs:
                 page: page,
                 per_page: 100,
                 repo: context.repo.repo,
-                workflow_id: 'cards.yaml'
+                workflow_id: 'project.yaml'
               });
               if (response.data.workflow_runs.length > 0) {
                 for (const run of response.data.workflow_runs) {
