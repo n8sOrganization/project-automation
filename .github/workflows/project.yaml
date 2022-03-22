@@ -45,15 +45,19 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
+      - name: Delay to keep order
+        run: |  
+         COUNT=${{ matrix.issueCount }}*4
+         sleep $COUNT
       - name: Checkout
         uses: actions/checkout@v2
       - name: Create issue
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: ${{ matrix.issue }}
-      - name: Sleep
+      - name: Delay to prevent race
         run: |  
-         COUNT=${{ matrix.issueCount }}*4
+         COUNT=5s
          sleep $COUNT
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
