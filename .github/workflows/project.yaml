@@ -57,6 +57,27 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: ${{ matrix.issue }}
+  makeIssuesArrayAgain:
+    if: github.repository != 'n8sOrganization/project-automation'  
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.issueArray.outputs.matrix }}
+      issueCount: ${{ steps.issueArray.outputs.issueCount }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: issueArray 
+        id: issueArray 
+        run: |  
+         issueCount=0
+         JSON="::set-output name=matrix::{\"include\":["
+         for file in .github/seed-issues/*; do
+           issueCount=$((issueCount+1))
+           JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
+         done
+         JSON+="]}"
+         echo $JSON
+         echo "::set-output name=issueCount::$issueCount"
   createCards:
     if: github.repository != 'n8sOrganization/project-automation'
     #needs: [createIssues]
