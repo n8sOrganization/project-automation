@@ -59,8 +59,7 @@ jobs:
           filename: ${{ matrix.issue }}
       - name: Delay to prevent race
         run: |  
-         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 20 ))
-         sleep $count
+         sleep 4
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
