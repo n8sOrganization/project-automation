@@ -1,6 +1,6 @@
 name: buildProject
 on:
-  push:
+  create:
 env:
   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 jobs:
