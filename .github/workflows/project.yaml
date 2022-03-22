@@ -65,4 +65,4 @@ jobs:
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: ${{ matrix.issueCount }}
+          issue-number: github.event.issue.number #${{ matrix.issueCount }}
