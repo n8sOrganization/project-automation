@@ -1,6 +1,7 @@
 name: buildProject
 on: 
- create: []
+ create: {}
+ workflow_dispatch: {}
 env:
   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 jobs:
