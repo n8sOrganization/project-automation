@@ -59,7 +59,7 @@ jobs:
           filename: ${{ matrix.issue }}
   createCards:
     if: github.repository != 'n8sOrganization/project-automation'
-    needs: [createIssues]
+    #needs: [createIssues]
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
