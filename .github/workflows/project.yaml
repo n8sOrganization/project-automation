@@ -20,15 +20,14 @@ jobs:
          JSON="::set-output name=matrix::{\"include\":["
          for file in .github/seed-issues/*; do
            issueCount=$((issueCount+1))
-           export ISSUECOUNT=$issueCount
            JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
          done
+         issueCount=9
          JSON+="]}"
          echo $JSON
          echo "::set-output name=issueCount::{$ISSUECOUNT}"
       - name: sanity
         run: |
-          echo $ISSUECOUNT
           echo $issueCount
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
