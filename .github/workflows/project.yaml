@@ -26,6 +26,10 @@ jobs:
          JSON+="]}"
          echo $JSON
          echo "::set-output name=issueCount::{$ISSUECOUNT}"
+      - name: sanity
+        run: |
+          echo $ISSUECOUNT
+          echo $issueCount
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
