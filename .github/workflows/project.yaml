@@ -22,7 +22,6 @@ jobs:
            issueCount=$((issueCount+1))
            JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
          done
-         issueCount=9
          JSON+="]}"
          echo $JSON
          echo "::set-output name=issueCount::$issueCount"
@@ -60,8 +59,7 @@ jobs:
           filename: ${{ matrix.issue }}
       - name: Delay to prevent race
         run: |  
-         COUNT=5s
-         sleep $COUNT
+         sleep 10s
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
