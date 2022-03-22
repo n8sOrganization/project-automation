@@ -42,7 +42,7 @@ jobs:
             Complete      
   createIssues:
     if: github.repository != 'n8sOrganization/project-automation'
-    needs: [makeIssuesArray, createColumns]
+    needs: [makeIssuesArray]
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Delay to keep order
         run: |  
-         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 10 ))
+         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 5 ))
          sleep $count
       - name: Create issue
         uses: JasonEtco/create-an-issue@v2
