@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.issueArray.outputs.matrix }}
+      issueCount: ${{ steps.issueArray.outputs.issueCount }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,6 +24,7 @@ jobs:
          done
          JSON+="]}"
          echo $JSON
+         echo "::set-output name=issueCount::$issueCount"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -47,7 +49,7 @@ jobs:
     steps:
       - name: Delay to keep order
         run: |  
-         count=$((${{ matrix.issueCount }} * 20))
+         count=$(((${{ needs.makeIssueArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1)* 15))
          sleep $count
       - name: Checkout
         uses: actions/checkout@v2
