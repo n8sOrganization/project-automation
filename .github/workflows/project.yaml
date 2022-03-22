@@ -47,7 +47,7 @@ jobs:
     steps:
       - name: Delay to keep order
         run: |  
-         count=$((${{ matrix.issueCount }} * 10))
+         count=$(((40 - ${{ matrix.issueCount }}) / 39 * 100))
          sleep $count
       - name: Checkout
         uses: actions/checkout@v2
