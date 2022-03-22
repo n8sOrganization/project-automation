@@ -22,9 +22,10 @@ jobs:
            issueCount=$((issueCount+1))
            JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
          done
+         issueCount=9
          JSON+="]}"
          echo $JSON
-         echo "::set-output name=issueCount::${issueCount}"
+         echo "::set-output name=issueCount::$issueCount"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -49,7 +50,7 @@ jobs:
     steps:
       - name: Delay to keep order
         run: |  
-         count=$(( (${{ needs.makeIssueArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1)* 15 ))
+         count=$(( (${{ needs.makeIssueArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 15 ))
          sleep $count
       - name: Checkout
         uses: actions/checkout@v2
