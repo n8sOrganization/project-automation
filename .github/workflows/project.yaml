@@ -50,8 +50,7 @@ jobs:
     steps:
       - name: Delay to keep order
         run: |  
-         echo ${{ needs.makeIssueArray.outputs.issueCount }}
-         count=$(( (${{ needs.makeIssueArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 15 ))
+         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 15 ))
          sleep $count
       - name: Checkout
         uses: actions/checkout@v2
