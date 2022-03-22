@@ -25,6 +25,25 @@ jobs:
          JSON+="]}"
          echo $JSON
          echo "::set-output name=issueCount::$issueCount"
+  makeIssuesArrayAgain:
+    if: github.repository != 'n8sOrganization/project-automation'  
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.issueArray.outputs.matrix2 }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: issueArray 
+        id: issueArray 
+        run: |  
+         issueCount=0
+         JSON="::set-output name=matrix2::{\"include\":["
+         for file in .github/seed-issues/*; do
+           issueCount=$((issueCount+1))
+           JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
+         done
+         JSON+="]}"
+         echo $JSON
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -62,10 +81,10 @@ jobs:
     needs: [createIssues]
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.makeIssuesArrayAgain.outputs.matrix2) }}
     steps:
-      #- name: Checkout
-      #  uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
