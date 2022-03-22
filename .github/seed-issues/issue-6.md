@@ -1,4 +1,4 @@
 ---
-title: test
+title: Issue 6
 ---
 test data
