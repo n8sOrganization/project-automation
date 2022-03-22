@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.issueArray.outputs.matrix }}
-      issueCount: ${{ steps.issueArray.outputs.issueCount }}
+      totalCount: ${{ steps.issueArray.outputs.totalCount }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
          done
          JSON+="]}"
          echo $JSON
-         echo "::set-output name=issueCount::$issueCount"
+         echo "::set-output name=totalCount::$issueCount"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -48,7 +48,6 @@ jobs:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
       - name: Delay to keep order
-          #$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 15 ))
         run: |  
          count=$(( (${{ matrix.issueCount }} * 15) ))
          sleep $count
@@ -60,7 +59,7 @@ jobs:
           filename: ${{ matrix.issue }}
       - name: Delay to keep order
         run: |  
-         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 18 ))
+         count=$(( (${{ needs.makeIssuesArray.outputs.totalCount }} - ${{ matrix.issueCount }} + 1) * 20 ))
          sleep $count
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
