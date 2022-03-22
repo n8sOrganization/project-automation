@@ -52,6 +52,9 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: ${{ matrix.issue }}
+      - name: Sleep
+        run: |  
+         sleep 5s
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
