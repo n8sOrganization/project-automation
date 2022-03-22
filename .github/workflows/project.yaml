@@ -48,8 +48,9 @@ jobs:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
       - name: Delay to keep order
+          #$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 15 ))
         run: |  
-         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 15 ))
+         count=$(( (${{ matrix.issueCount }} * 15) ))
          sleep $count
       - name: Checkout
         uses: actions/checkout@v2
@@ -58,8 +59,9 @@ jobs:
         with:
           filename: ${{ matrix.issue }}
       - name: Delay to keep order
+          #$(( (${{ needs.makeIssuesArray.outputs.issueCount }} * 15) ))
         run: |  
-         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} * 15) ))
+         count=$(( (${{ matrix.issueCount }} * 15) ))
          sleep $count
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
