@@ -47,19 +47,25 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
-      - name: Delay to keep order
-        run: |  
-         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 15 ))
-         sleep $count
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Delay to keep order
+        run: |  
+         count=$(( (${{ needs.makeIssuesArray.outputs.issueCount }} - ${{ matrix.issueCount }} + 1) * 10 ))
+         sleep $count
       - name: Create issue
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: ${{ matrix.issue }}
-      - name: Delay to prevent race
-        run: |  
-         sleep 10s
+  createCards:
+    if: github.repository != 'n8sOrganization/project-automation'
+    needs: [createIssues]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Create Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
