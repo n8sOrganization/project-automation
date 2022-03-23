@@ -3,7 +3,7 @@ on:
   #workflow_dispatch: {}
   push: {}
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #${{ secrets.GH_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   makeIssuesArray:
     if: github.repository != 'n8sOrganization/project-automation'  
@@ -48,16 +48,16 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
-      - name: Set Vars
+      - name: setVars
         env:
           ISSUE_NUM: ${{ matrix.issueCount }}
-        run: echo ::set-env name=WAIT_FOR::$(($ISSUENUM-1))
+        run: echo ::set-env name=WAIT_FOR::$(($ISSUE_NUM-1))
       - name: Run in order
         if: matrix.issueCount != 1
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
           ref: ${{ github.ref }}
-          check-name: "createIssues (${{ matrix.issue }}, $ISSUE_NUM)"
+          check-name: "createIssues (${{ matrix.issue }}, $WAIT_FOR)"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
       - name: Checkout
