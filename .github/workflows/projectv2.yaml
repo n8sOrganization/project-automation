@@ -1,8 +1,8 @@
 name: buildProjectv2
 on:
-  #workflow_dispatch: {}
-  push: {}
-  create: {}
+  workflow_dispatch: {}
+  #push: {}
+  #create: {}
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
