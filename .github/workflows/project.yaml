@@ -1,6 +1,7 @@
 name: buildProject
-on: 
- push: {}
+on:
+  workflow_dispatch: {}
+  #push: {}
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #${{ secrets.GH_TOKEN }}
 jobs:
