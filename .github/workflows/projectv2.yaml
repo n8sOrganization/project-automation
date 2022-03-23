@@ -1,7 +1,7 @@
 name: buildProject
 on:
   workflow_dispatch: {}
-  #push: {}
+  push: {}
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #${{ secrets.GH_TOKEN }}
 jobs:
@@ -53,7 +53,7 @@ jobs:
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
           ref: ${{ github.ref }}
-          check-name: "createIssues ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}"
+          check-name: "createIssues (${{ matrix.issue }}, $(( (${{ matrix.issueCount }} - 1) )))"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
       - name: Checkout
