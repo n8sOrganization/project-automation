@@ -1,0 +1,73 @@
+name: buildProject
+on: 
+ push: {}
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #${{ secrets.GH_TOKEN }}
+jobs:
+  makeIssuesArray:
+    if: github.repository != 'n8sOrganization/project-automation'  
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.issueArray.outputs.matrix }}
+      totalCount: ${{ steps.issueArray.outputs.totalCount }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: issueArray 
+        id: issueArray 
+        run: |  
+         issueCount=0
+         JSON="::set-output name=matrix::{\"include\":["
+         for file in .github/seed-issues/*; do
+           issueCount=$((issueCount+1))
+           JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
+         done
+         JSON+="]}"
+         echo $JSON
+         echo "::set-output name=totalCount::$issueCount"
+  createColumns:
+    if: github.repository != 'n8sOrganization/project-automation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: createProject
+        uses: matthewferry/create-a-project@v1
+        with:
+          name: "POC"
+          description: POC Project Board
+          columns: |
+            ToDo
+            inProgress
+            Complete      
+  createIssues:
+    if: github.repository != 'n8sOrganization/project-automation'
+    needs: [makeIssuesArray, createColumns]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
+    steps:
+      - name: Wait in order
+        if: ${{ matrix.issueCount }} != 1
+        uses: lewagon/wait-on-check-action@v1.0.0
+        with:
+          ref: ${{ github.ref }}
+          check-name: "createIssues ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create issue
+        uses: JasonEtco/create-an-issue@v2
+        with:
+          filename: ${{ matrix.issue }}
+      - name: Delay to keep order
+        run: |  
+         count=$(( (${{ needs.makeIssuesArray.outputs.totalCount }} - ${{ matrix.issueCount }} + 1) * 20 ))
+         sleep $count
+      - name: Create Project Card
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          project-name: POC
+          column-name: ToDo
+          issue-number: ${{ matrix.issueCount }}
