@@ -48,12 +48,16 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
-      - name: Wait in order
+      - name: Set Vars
+        env:
+          ISSUE_NUM: ${{ matrix.issueCount }}
+        run: echo ::set-env name=WAIT_FOR::$(($ISSUENUM-1))
+      - name: Run in order
         if: matrix.issueCount != 1
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
           ref: ${{ github.ref }}
-          check-name: "createIssues (${{ matrix.issue }}, $(${{ matrix.issueCount }} - 1))"
+          check-name: "createIssues (${{ matrix.issue }}, $ISSUE_NUM)"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
       - name: Checkout
