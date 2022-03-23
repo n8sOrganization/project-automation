@@ -1,4 +1,4 @@
-name: buildProject
+name: buildProjectv2
 on:
   #workflow_dispatch: {}
   push: {}
