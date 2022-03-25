@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.issueArray.outputs.matrix }}
+      matrix2: ${{ steps.issueArray.outputs.matrix2 }}
       totalCount: ${{ steps.issueArray.outputs.totalCount }}
     steps:
       - name: Checkout
