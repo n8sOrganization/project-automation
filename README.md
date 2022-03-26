@@ -1,4 +1,4 @@
-## Github Project Board Creation Automation Hack
+## Hack to Create Github Project Board with Issues Addded on Repo from Template
 
 With these workflow files in your template repo, you create a repo from template, then gh actions will create a project, add columns, create issues, attach issues to board, and cleanup the workflows so they won't run again.
 
