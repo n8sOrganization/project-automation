@@ -1,9 +1,9 @@
-name: buildProject
+name: buildProjectv
 on:
-  #push: {}
-  workflow_dispatch: {}
+  #workflow_dispatch: {}
+  push: {}
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #${{ secrets.GH_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   makeIssuesArray:
     if: github.repository != 'n8sOrganization/project-automation'  
@@ -11,22 +11,27 @@ jobs:
     outputs:
       matrix: ${{ steps.issueArray.outputs.matrix }}
       matrix2: ${{ steps.issueArray.outputs.matrix2 }}
-      totalCount: ${{ steps.issueArray.outputs.totalCount }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: issueArray 
         id: issueArray 
-        run: |  
+        run: |
          issueCount=0
-         JSON="::set-output name=matrix::{\"include\":["
          for file in .github/seed-issues/*; do
            issueCount=$((issueCount+1))
            JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
          done
-         JSON+="]}"
-         echo $JSON
-         echo "::set-output name=totalCount::$issueCount"
+         JSON=${JSON%?}
+         echo "::set-output name=matrix::{\"include\":["$JSON"]}"
+         
+         issueCount=0
+         for file in .github/seed-issues/*; do
+           issueCount=$((issueCount+1))
+           JSON2+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
+         done
+         JSON2=${JSON2%?}
+         echo "::set-output name=matrix2::[$JSON2]"
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -43,24 +48,26 @@ jobs:
             inProgress
             Complete      
   createIssues:
-    if: github.repository != 'n8sOrganization/project-automation'
-    needs: [makeIssuesArray, createColumns]
     runs-on: ubuntu-latest
+    needs: [makeIssuesArray, createColumns]
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
     steps:
       - name: setVars
         if: matrix.issueCount != 1
-        env:
-          ISSUE_NUM: ${{ matrix.issueCount }}
         run: |
-          echo "::set-env name=WAIT_FOR::$(($ISSUE_NUM-1))"
+          issueNum=$(( (${{ matrix.issueCount }}-1) ))
+          fileIssueNum=$((issueNum-1))
+          issue=$(echo '${{ needs.makeIssuesArray.outputs.matrix2 }}' | jq --argjson fileIssueNum "$fileIssueNum" '.[$fileIssueNum].issue')
+          issueStripped="${issue:1:-1}"
+          combinedIssue=$(echo "createIssues ($issueStripped, $issueNum)")
+          echo "WAIT_FOR=$combinedIssue" >> $GITHUB_ENV
       - name: Run in order
         if: matrix.issueCount != 1
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
           ref: ${{ github.ref }}
-          check-name: "createIssues (${{ matrix.issue }}, $WAIT_FOR)"
+          check-name: ${{ env.WAIT_FOR }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
       - name: Checkout
