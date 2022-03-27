@@ -4,9 +4,7 @@ With these workflow files in your template repo, you create a repo from template
 
 The cleanup workflow file is set to manual execution by default. Beware that it will delete all workflow history from your repo.
 
-Add the contents of the `/.github` folder to your template repo. 
+Add the contents of the `/.github` folder to your template repo. Edit the `/.github/workflows/project.yeml` and `/.github/workflows/cleanup.yaml` on appropriate `if:` lines to match your org/repo. Commit both of these changes in one commmit. If not, it will run against your template repo.
 
-Edit the `/.github/workflows/project.yeml` and `/.github/workflows/cleanup.yaml` on appropriate `if:` lines to match your org/repo. Commit both of these changes in one commmit. If not, it will run against your template repo.
-
-The `project` workflow creates the project, issues, and assigns issues to board. The `cleanup` workflow deletes the workflow files and project workflow history to prevent someone from inadvertantly running the automation again. The `seed-issues` folder contains md files representing the contents of each issue to be created, issues will be added to the board to match the order in the file system. The Github matrix strategy is set to max of five concurrent jobs to preven interfering with other organizational job requirements.
+The `seed-issues` folder contains md files representing the contents of each issue to be created, issues will be added to the board matching their order in the file system. The Github matrix strategy is set to max of five concurrent jobs to preven interfering with other organizational job requirements.
 
