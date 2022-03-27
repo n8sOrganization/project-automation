@@ -1,6 +1,6 @@
-name: buildProjectv
+name: buildProject
 on:
-  #workflow_dispatch: {}
+  #14workflow_dispatch: {}
   push: {}
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -10,28 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.issueArray.outputs.matrix }}
-      matrix2: ${{ steps.issueArray.outputs.matrix2 }}
+      totalCount: ${{ steps.issueArray.outputs.totalCount }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: issueArray 
         id: issueArray 
         run: |
-         issueCount=0
+         issueNumber=0
          for file in .github/seed-issues/*; do
-           issueCount=$((issueCount+1))
-           JSON+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
+           issueNumber=$((issueNumber+1))
+         done
+         echo "::set-output name=totalCount::$issueNumber"
+         for file in .github/seed-issues/*; do
+           JSON+=$(echo "{\"issue\":\"$file\",\"issueNumber\":$issueNumber},")
+           issueNumber=$((issueNumber-1))
          done
          JSON=${JSON%?}
-         echo "::set-output name=matrix::{\"include\":["$JSON"]}"
-         
-         issueCount=0
-         for file in .github/seed-issues/*; do
-           issueCount=$((issueCount+1))
-           JSON2+=$(echo "{\"issue\":\"$file\",\"issueCount\":$issueCount},")
-         done
-         JSON2=${JSON2%?}
-         echo "::set-output name=matrix2::[$JSON2]"
+         JSON="{\"include\":["$JSON"]}"
+         JSON=$(echo $JSON | jq -c --sort-keys '.[] | reverse')
+         JSON="{\"include\":"$JSON"}"
+         echo "::set-output name=matrix::$JSON" 
   createColumns:
     if: github.repository != 'n8sOrganization/project-automation'
     runs-on: ubuntu-latest
@@ -52,18 +51,18 @@ jobs:
     needs: [makeIssuesArray, createColumns]
     strategy:
       matrix: ${{ fromJson(needs.makeIssuesArray.outputs.matrix) }}
+      max-parallel: 5
     steps:
       - name: setVars
-        if: matrix.issueCount != 1
+        if: format(matrix.issueNumber) != 1
         run: |
-          issueNum=$(( (${{ matrix.issueCount }}-1) ))
-          fileIssueNum=$((issueNum-1))
-          issue=$(echo '${{ needs.makeIssuesArray.outputs.matrix2 }}' | jq --argjson fileIssueNum "$fileIssueNum" '.[$fileIssueNum].issue')
-          issueStripped="${issue:1:-1}"
-          combinedIssue=$(echo "createIssues ($issueStripped, $issueNum)")
+          issueNum=$(( (${{ matrix.issueNumber }} - 1) ))
+          fileIssueNum=$(( (${{ matrix.issueNumber }} - 2) ))
+          issue=$(echo '${{ needs.makeIssuesArray.outputs.matrix }}' | jq -r --argjson fileIssueNum "$fileIssueNum" '.include[$fileIssueNum].issue')
+          combinedIssue=$(echo "createIssues ($issue, $issueNum)")
           echo "WAIT_FOR=$combinedIssue" >> $GITHUB_ENV
       - name: Run in order
-        if: matrix.issueCount != 1
+        if: format(matrix.issueNumber) != 1
         uses: lewagon/wait-on-check-action@v1.0.0
         with:
           ref: ${{ github.ref }}
@@ -84,4 +83,4 @@ jobs:
         with:
           project-name: POC
           column-name: ToDo
-          issue-number: ${{ matrix.issueCount }}
+          issue-number: ${{ matrix.issueNumber }}
